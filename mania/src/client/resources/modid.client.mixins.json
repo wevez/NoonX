@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "package": "tech.mania.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "client.ClientPlayerInteractionManagerMixin",
+    "client.KeyboardInputMixin",
+    "client.KeyboardMixin",
+    "client.MinecraftClientAccessor",
+    "client.MinecraftClientMixin",
+    "client.MouseMixin",
+    "entity.ClientPlayerEntityMixin",
+    "gui.MultiplayerScreenMixin",
+    "gui.ScreenAccessor",
+    "gui.ScreenMixin",
+    "renderer.CameraMixin",
+    "renderer.WorldRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "network.ClientConnectionMixin"
+	]
+}
