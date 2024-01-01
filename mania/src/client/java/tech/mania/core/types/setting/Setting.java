@@ -12,7 +12,11 @@ public abstract class Setting {
         this.visibility = visibility;
     }
 
-    public boolean isVisible() {
+    public final String getName() {
+        return this.name;
+    }
+
+    public final boolean isVisible() {
         return this.visibility.isVisible();
     }
 

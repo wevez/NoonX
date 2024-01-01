@@ -10,7 +10,6 @@ import tech.mania.core.features.event.ClickTickEvent;
 import tech.mania.core.features.event.RotationEvent;
 import tech.mania.core.features.setting.BooleanSetting;
 import tech.mania.core.features.setting.DoubleSetting;
-import tech.mania.core.features.setting.ListSetting;
 import tech.mania.core.features.setting.ModeSetting;
 import tech.mania.core.types.module.Module;
 import tech.mania.core.types.module.ModuleCategory;
@@ -107,40 +106,6 @@ public class KillAura extends Module {
             .unit("CPS")
             .end();
 
-
-    private final ListSetting targets = ListSetting
-            .build()
-            .name("Targets")
-            .settings(
-                    this.animals,
-                    this.monsters,
-                    this.players,
-                    this.teams,
-                    this.sort
-                    )
-            .end(), range = ListSetting
-            .build()
-            .name("Range")
-            .settings(
-                    this.attackRange,
-                    this.loadRange
-                    )
-            .end(), attack = ListSetting
-            .build()
-            .name("Attack")
-            .settings(
-                    this.throughWalls,
-                    this.hitBox
-                    )
-            .end(), cps = ListSetting
-            .build()
-            .name("CPS")
-            .settings(
-                    this.minCPS,
-                    this.maxCPS
-            )
-            .end();
-
     private Comparator<LivingEntity> comparator = DISTANCE_COMP;
 
     private double attackDistSq = 9, loadDistSq = 16;
@@ -159,10 +124,20 @@ public class KillAura extends Module {
         super("KillAura", "Attacks entities around you", ModuleCategory.COMBAT);
         this.keyCode = GLFW.GLFW_KEY_R;
         this.getSettings().addAll(Arrays.asList(
-                this.targets,
-                this.range,
-                this.attack,
-                this.cps
+                this.animals,
+                this.monsters,
+                this.players,
+                this.teams,
+                this.sort,
+
+                this.attackRange,
+                this.loadRange,
+
+                this.throughWalls,
+                this.hitBox,
+
+                this.minCPS,
+                this.maxCPS
         ));
     }
 

@@ -13,6 +13,7 @@ public class ModuleManager {
     public ModuleManager() {
         modules = Arrays.asList(
                 new KillAura(),
+                new Velocity(),
                 new AutoSprint()
         );
     }
