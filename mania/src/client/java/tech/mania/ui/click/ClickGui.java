@@ -4,7 +4,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import tech.mania.core.types.module.ModuleCategory;
-import tech.mania.ui.util.ClickGuiWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ public class ClickGui extends Screen {
 
     public ClickGui() {
         super(Text.literal(""));
-        double currentX = 50;
+        float currentX = 50;
         for (ModuleCategory c : ModuleCategory.values()) {
             windows.add(new ClickGuiWindow(currentX, 30, c));
             currentX += 150;

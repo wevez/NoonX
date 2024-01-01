@@ -2,9 +2,9 @@ package tech.mania.core.types.module;
 
 public enum ModuleCategory {
 
-    COMBAT,
-    MOVEMENT,
-    PLAYER,
-    RENDER,
-    MISC;
+    Combat,
+    Movement,
+    Player,
+    Render,
+    Misc;
 }

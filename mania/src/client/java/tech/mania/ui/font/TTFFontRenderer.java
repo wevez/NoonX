@@ -39,6 +39,11 @@ public class TTFFontRenderer {
         return si;
     }
 
+    public void drawStringShadow(MatrixStack matrices, String text, float x, float y, int color) {
+        drawString(matrices, text, x + 0.5f, y + 0.5f, 0xff000000);
+        drawString(matrices, text, x, y, color);
+    }
+
     
     public void drawString(MatrixStack matrices, String text, float x, float y, int color) {
         int color1 = color;

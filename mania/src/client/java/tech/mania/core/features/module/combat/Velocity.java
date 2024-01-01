@@ -6,6 +6,6 @@ import tech.mania.core.types.module.ModuleCategory;
 public class Velocity extends Module {
 
     public Velocity() {
-        super("Velocity", "Pre", ModuleCategory.COMBAT);
+        super("Velocity", "Pre", ModuleCategory.Combat);
     }
 }

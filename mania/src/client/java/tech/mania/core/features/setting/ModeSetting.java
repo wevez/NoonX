@@ -14,6 +14,7 @@ public class ModeSetting extends Setting {
     private String value;
     private int index;
     private final Consumer<String> onSetting;
+    public boolean expand;
 
     private ModeSetting(String name, Visibility visibility, String[] option, Consumer<String> onSetting) {
         super(name, visibility);

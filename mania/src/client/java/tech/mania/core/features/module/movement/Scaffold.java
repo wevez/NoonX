@@ -9,7 +9,7 @@ import tech.mania.core.types.module.ModuleCategory;
 public class Scaffold extends Module {
 
     public Scaffold() {
-        super("Scaffold", "Place block at your feet", ModuleCategory.MOVEMENT);
+        super("Scaffold", "Place block at your feet", ModuleCategory.Movement);
     }
 
     @Override

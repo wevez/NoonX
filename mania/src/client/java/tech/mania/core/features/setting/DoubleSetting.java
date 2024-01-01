@@ -40,6 +40,10 @@ public class DoubleSetting extends Setting {
         return unit;
     }
 
+    public double getPercentage() {
+        return (value - min) / (max - min);
+    }
+
     public double getValue() {
         return value;
     }

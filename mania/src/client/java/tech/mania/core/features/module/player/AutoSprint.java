@@ -8,7 +8,7 @@ import tech.mania.core.types.module.ModuleCategory;
 public class AutoSprint extends Module {
 
     public AutoSprint() {
-        super("AutoSprint", "Makes you sprinting", ModuleCategory.PLAYER);
+        super("AutoSprint", "Makes you sprinting", ModuleCategory.Player);
         this.keyCode = GLFW.GLFW_KEY_O;
     }
 

@@ -121,7 +121,7 @@ public class KillAura extends Module {
     private final LegitCPSTimer timer = new LegitCPSTimer();
 
     public KillAura() {
-        super("KillAura", "Attacks entities around you", ModuleCategory.COMBAT);
+        super("KillAura", "Attacks entities around you", ModuleCategory.Combat);
         this.keyCode = GLFW.GLFW_KEY_R;
         this.getSettings().addAll(Arrays.asList(
                 this.animals,
