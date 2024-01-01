@@ -26,7 +26,7 @@ public class LegitEntityRotation implements MCHook {
         if (bb.intersects(eye, eye.add(eyeA))) {
             if (System.currentTimeMillis() > next) {
                 final float[] center = RotationUtil.rotation(entity.getEyePos(), eye);
-                next = System.currentTimeMillis() + RandomUtil.nextInt(100);
+                next = System.currentTimeMillis() + RandomUtil.nextInt(50);
                 aYaw = RandomUtil.nextFloat(0.1f) * MathHelper.wrapDegrees(
                         center[0] - mc.player.getYaw()
                 );

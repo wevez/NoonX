@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.mania.core.types.event.EventManager;
 import tech.mania.core.types.module.ModuleManager;
+import tech.mania.ui.click.ClickGui;
 
 public class Mania {
 
@@ -17,15 +18,21 @@ public class Mania {
 
     private EventManager eventManager;
     private ModuleManager moduleManager;
+    private ClickGui clickGui;
 
     public static void init() {
         LOGGER.info("Starting mania client");
         instance.eventManager = new EventManager();
         instance.moduleManager = new ModuleManager();
+        instance.clickGui = new ClickGui();
     }
 
     public static void shutdown() {
 
+    }
+
+    public static ClickGui getClickGui() {
+        return instance.clickGui;
     }
 
     public static EventManager getEventManager() {

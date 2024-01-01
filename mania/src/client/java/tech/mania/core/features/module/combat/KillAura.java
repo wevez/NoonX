@@ -171,14 +171,14 @@ public class KillAura extends Module {
         target = null;
         final Vec3d eye = mc.player.getEyePos();
         final List<LivingEntity> targetEntry = StreamSupport.stream(mc.world.getEntities().spliterator(), false)
-                .filter(e -> e instanceof LivingEntity)
+                .filter(e -> e instanceof LivingEntity && e != mc.player)
                 .map(e -> (LivingEntity) e)
                 .filter(e -> {
                     if (e instanceof AnimalEntity) return this.animals.getValue();
                     if (e instanceof MobEntity) return this.monsters.getValue();
                     if (e instanceof PlayerEntity) {
                         if (this.players.getValue()) {
-                            return e.getTeamColorValue() != mc.player.getTeamColorValue();
+                            return true;
                         }
                         return false;
                     }

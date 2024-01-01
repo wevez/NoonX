@@ -64,6 +64,15 @@ dependencies {
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
 	modImpl("com.github.0x3C50:Renderer:2273f5e562")
+
+	configurations.libImpl.dependencies.each {
+		implementation(it)
+	}
+
+	configurations.modImpl.dependencies.each {
+		modImplementation(it)
+		include(it)
+	}
 }
 
 processResources {

@@ -1,6 +1,7 @@
 package tech.mania.mixin.client;
 
 import net.minecraft.client.Keyboard;
+import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,6 +23,10 @@ public class KeyboardMixin implements MCHook {
     )
     public void injectOnKe(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         if (mc.currentScreen == null && action == 1) {
+            if (key == GLFW.GLFW_KEY_RIGHT_SHIFT) {
+                mc.setScreen(Mania.getClickGui());
+            }
+
             Mania.getModuleManager().getModules().stream()
                     .filter(m -> m.keyCode == key)
                     .forEach(Module::toggle);
