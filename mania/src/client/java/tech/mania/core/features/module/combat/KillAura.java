@@ -153,7 +153,12 @@ public class KillAura extends Module {
                     if (e instanceof MobEntity) return this.monsters.getValue();
                     if (e instanceof PlayerEntity) {
                         if (this.players.getValue()) {
-                            return true;
+                            return switch (this.teams.getValue()) {
+                                case "None" -> true;
+                                case "Normal" -> mc.player.getTeamColorValue() == e.getTeamColorValue();
+                                default -> false;
+                            };
+
                         }
                         return false;
                     }
