@@ -41,9 +41,8 @@ public class MouseMixin {
 
         final ClientPlayerEntity thePlayer = MinecraftClient.getInstance().player;
 
-        final double gcd = RotationUtil.getFixedAngleDelta();
-        thePlayer.setYaw(RotationUtil.getFixedSensitivityAngle(rotationEvent.yaw, thePlayer.getYaw(), (float) gcd));
-        thePlayer.setPitch(RotationUtil.getFixedSensitivityAngle(rotationEvent.pitch, thePlayer.getPitch(), (float) gcd));
+        thePlayer.setYaw(RotationUtil.getFixedSensitivityAngle(rotationEvent.yaw, thePlayer.getYaw()));
+        thePlayer.setPitch(RotationUtil.getFixedSensitivityAngle(rotationEvent.pitch, thePlayer.getPitch()));
         thePlayer.setPitch(MathHelper.clamp(thePlayer.getPitch(), -90f, 90f));
     }
 }

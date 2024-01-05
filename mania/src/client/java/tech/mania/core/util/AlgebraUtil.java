@@ -6,6 +6,14 @@ import net.minecraft.util.math.Vec3d;
 
 public class AlgebraUtil {
 
+    public static Vec3d clone(Vec3d vec) {
+        return new Vec3d(
+                vec.x,
+                vec.y,
+                vec.z
+        );
+    }
+
     public static Vec3d nearest(Box box, Vec3d vec) {
         return new Vec3d(
                 MathHelper.clamp(vec.x, box.minX, box.maxX),

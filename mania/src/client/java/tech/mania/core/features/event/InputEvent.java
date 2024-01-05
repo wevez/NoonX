@@ -7,7 +7,7 @@ import tech.mania.core.types.event.EventListener;
 public class InputEvent extends EventArgument
 {
   private final Input INPUT;
-  public boolean moveFix;
+  public boolean moveFix = false;
   
   public InputEvent(Input input) {
     this.INPUT = input;

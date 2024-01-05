@@ -109,7 +109,7 @@ public class ClickGuiWindow implements MCHook {
                             renderQuad(context.getMatrices(), accentColor, x - 2, currentY, x + 122, currentY + 20);
                             renderQuad(context.getMatrices(), outlineColor1, x - 1, currentY, x + 121, currentY + 19);
                             renderQuad(context.getMatrices(), outlineColor2, x, currentY, x + 120, currentY + 18);
-                            font.drawStringShadow(context.getMatrices(), o, x + 4, currentY + 4, settingTextColor);
+                            font.drawStringShadow(context.getMatrices(), o, x + 4, currentY + 4,  ms.getValue().equals(o) ? -1 : settingTextColor);
                             //currentY += 18;
                         }
                     }

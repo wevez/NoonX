@@ -79,4 +79,16 @@ public abstract class ClientPlayerEntityMixin {
         final PostUpdateEvent event = new PostUpdateEvent();
         Mania.getEventManager().call(event);
     }
+
+    /*
+    @Inject(
+            method = "tickMovement",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/input/Input;tick(ZF)V"
+            )
+    )
+    public void injectTickMovement(CallbackInfo ci) {
+
+    }*/
 }

@@ -30,14 +30,17 @@ public class RotationUtil implements MCHook {
     /**
      * Returns the smallest angle difference possible with a specific sensitivity ("gcd")
      */
-    public static double getFixedAngleDelta() {
-        return Math.pow(mc.options.getMouseSensitivity().getValue() * 0.6f + 0.2f, 3) * 1.2f;
+    public static float getFixedAngleDelta() {
+//        float z = (float) (mc.options.getMouseSensitivity().getValue() * 0.6f + 0.2f);
+        float z = (float) (0.1 * 0.6f + 0.2f);
+        return (z * z * z * 1.2f);
     }
 
     /**
      * Returns angle that is legitimately accomplishable with player's current sensitivity
      */
-    public static float getFixedSensitivityAngle(float targetAngle, float startAngle, float gcd) {
-        return startAngle + (int) ((targetAngle - startAngle) / gcd)* gcd;
+    public static float getFixedSensitivityAngle(float targetAngle, float startAngle) {
+        float gcd = getFixedAngleDelta();
+        return startAngle + (int) ((targetAngle - startAngle) / gcd) * gcd;
     }
 }

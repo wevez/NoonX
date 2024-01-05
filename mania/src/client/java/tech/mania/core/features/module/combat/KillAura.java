@@ -7,6 +7,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.glfw.GLFW;
 import tech.mania.core.features.event.ClickTickEvent;
+import tech.mania.core.features.event.PostUpdateEvent;
+import tech.mania.core.features.event.PreUpdateEvent;
 import tech.mania.core.features.event.RotationEvent;
 import tech.mania.core.features.setting.BooleanSetting;
 import tech.mania.core.features.setting.DoubleSetting;
@@ -14,6 +16,7 @@ import tech.mania.core.features.setting.ModeSetting;
 import tech.mania.core.types.module.Module;
 import tech.mania.core.types.module.ModuleCategory;
 import tech.mania.core.util.AlgebraUtil;
+import tech.mania.core.util.PlayerUtil;
 import tech.mania.core.util.RandomUtil;
 import tech.mania.core.util.legit.LegitCPSTimer;
 import tech.mania.core.util.legit.LegitEntityRotation;
@@ -35,13 +38,16 @@ public class KillAura extends Module {
     private final BooleanSetting animals = BooleanSetting.build()
             .name("Animals")
             .value(true)
-            .end(), monsters = BooleanSetting.build()
+            .end();
+    private final BooleanSetting monsters = BooleanSetting.build()
             .name("Monsters")
             .value(true)
-            .end(), players = BooleanSetting.build()
+            .end();
+    private final BooleanSetting players = BooleanSetting.build()
             .name("Players")
             .value(true)
-            .end(), throughWalls = BooleanSetting
+            .end();
+    private final BooleanSetting throughWalls = BooleanSetting
             .build()
             .name("Through Walls")
             .end();
@@ -52,7 +58,8 @@ public class KillAura extends Module {
                     "None",
                     "Normal"
                     )
-            .end(), sort = ModeSetting.build()
+            .end();
+    private final ModeSetting sort = ModeSetting.build()
             .name("Sort")
             .visibility(players::getValue)
             .option(
@@ -79,26 +86,30 @@ public class KillAura extends Module {
             .range(0.0, 8.0)
             .unit("Blocks")
             .onSetting(v -> attackDistSq = v * v)
-            .end(), loadRange = DoubleSetting
+            .end();
+    private final DoubleSetting loadRange = DoubleSetting
             .build()
             .name("Load Range")
             .value(4.0)
             .range(0.0, 8.0)
             .unit("Blocks")
             .onSetting(v -> loadDistSq = v * v)
-            .end(), hitBox = DoubleSetting
+            .end();
+    private final DoubleSetting hitBox = DoubleSetting
             .build()
             .name("HitBox")
             .value(100.0)
             .range(0.0, 500.0)
             .unit("%")
-            .end(), minCPS = DoubleSetting
+            .end();
+    private final DoubleSetting minCPS = DoubleSetting
             .build()
             .name("Min CPS")
             .value(10.0)
             .range(0.0, 20.0)
             .unit("CPS")
-            .end(), maxCPS = DoubleSetting
+            .end();
+    private final DoubleSetting maxCPS = DoubleSetting
             .build()
             .name("Max CPS")
             .value(12.0)
@@ -155,10 +166,9 @@ public class KillAura extends Module {
                         if (this.players.getValue()) {
                             return switch (this.teams.getValue()) {
                                 case "None" -> true;
-                                case "Normal" -> mc.player.getTeamColorValue() == e.getTeamColorValue();
+                                case "Normal" -> mc.player.getTeamColorValue() != e.getTeamColorValue();
                                 default -> false;
                             };
-
                         }
                         return false;
                     }
@@ -177,6 +187,12 @@ public class KillAura extends Module {
         event.yaw = r[0];
         event.pitch = r[1];
         super.onRotation(event);
+    }
+
+    @Override
+    public void onPostUpdate(PostUpdateEvent event) {
+        //System.out.println(mc.player.getX());
+        //System.out.println(PlayerUtil.predictPositions(mc.player, 1));
     }
 
     @Override

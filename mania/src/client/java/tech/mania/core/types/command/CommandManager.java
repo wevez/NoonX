@@ -15,7 +15,10 @@ public class CommandManager implements MCHook {
 
     public CommandManager() {
         commands = Arrays.asList(
-                new BindCommand()
+                new BindCommand(),
+                new HelpCommand(),
+                new TCommand(),
+                new ToggleCommand()
         );
     }
 
@@ -53,5 +56,9 @@ public class CommandManager implements MCHook {
         }
 
         return true;
+    }
+
+    public List<Command> getCommands() {
+        return commands;
     }
 }

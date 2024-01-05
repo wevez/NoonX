@@ -18,8 +18,8 @@ public class BindCommand extends Command implements MCHook {
             return true;
         }
 
-        if (Mania.getModuleManager().getModules().stream().noneMatch(c -> c.getName().equalsIgnoreCase(args[1]))) {
-            mc.inGameHud.getChatHud().addMessage(Text.literal(String.format("Module '%S' not found", args[1])));
+        if (Mania.getModuleManager().getModules().stream().noneMatch(c -> c.getName().equalsIgnoreCase(args[0]))) {
+            mc.inGameHud.getChatHud().addMessage(Text.literal(String.format("Module '%S' not found", args[0])));
             return false;
         }
 
