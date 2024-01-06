@@ -160,6 +160,7 @@ public class KillAura extends Module {
         final List<LivingEntity> targetEntry = StreamSupport.stream(mc.world.getEntities().spliterator(), false)
                 .filter(e -> e instanceof LivingEntity && e != mc.player)
                 .map(e -> (LivingEntity) e)
+                .filter(e -> e.getHealth() == 0.1)
                 .filter(e -> {
                     if (e instanceof AnimalEntity) return this.animals.getValue();
                     if (e instanceof MobEntity) return this.monsters.getValue();
