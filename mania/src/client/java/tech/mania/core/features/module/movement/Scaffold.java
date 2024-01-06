@@ -103,45 +103,55 @@ public class Scaffold extends Module {
         data = getBlockData();
         float[] std = stdRotation();
         // 下のブロックかどうか
-        if (data != null) {
-            std = unqRotation();
-        } else {
-            std = new float[] {
-                    mc.player.getYaw(),
-                    mc.player.getPitch()
-            };
-        }
         boolean onAir = mc.world.getBlockState(mc.player.getBlockPos().add(0, -1, 0)).getBlock() == Blocks.AIR;
         if (onAir) {
             airTick++;
         } else {
             airTick = 0;
         }
+        std[0] = RotationUtil.smoothRot(mc.player.getYaw(), std[0], RandomUtil.nextFloat(5, 15));
+        std[1] = RotationUtil.smoothRot(mc.player.getPitch(),  std[1], RandomUtil.nextFloat(5, 15));
+        std[1] += (float) (Math.sin(MathHelper.wrapDegrees(mc.player.getYaw() - std[0]) / 5) * 5);
+        if (!mc.player.isOnGround()) {
+            mc.options.sneakKey.setPressed(false);
+            mc.options.sneakKey.setPressed(false);
+            if (data != null) {
+                std = unqRotation();
+            } else {
+                std = new float[]{
+                        mc.player.getYaw(),
+                        mc.player.getPitch()
+                };
+            }
+        }
+        //mc.options.sneakKey.setPressed(false);
         event.yaw = std[0];
         event.pitch = std[1];
 
         boolean shouldSneak = Math.abs(event.yaw - mc.player.getYaw()) > 1;
-        shouldSneak = false;
-        if (!diagonal) {
-            if (mc.player.isOnGround() && placeCount % 12 == 7) {
-                placeCount = 0;
-                //mc.player.jump();
-                //shouldSneak = true;
+        //shouldSneak = false;
+        if (mc.player.isOnGround()) {
+            if (!diagonal) {
+                if (mc.player.isOnGround() && placeCount % 12 == 4) {
+                    placeCount = 0;
+                    //mc.player.jump();
+                    shouldSneak = true;
+                }
+            } else {
+                if (mc.player.isOnGround() && placeCount % 12 == 8) {
+                    placeCount = 0;
+                    //mc.player.jump();
+                    shouldSneak = true;
+                }
             }
-        } else {
-            if (mc.player.isOnGround() && placeCount % 17 == 14 && airTick > 3) {
-                placeCount = 0;
-                //mc.player.jump();
-                //shouldSneak = true;
-            }
-        }
-        if (shouldSneak) {
-            sneakTick = 40;
-            mc.options.sneakKey.setPressed(true);
-        } else {
-            sneakTick--;
-            if (sneakTick < 0) {
-                mc.options.sneakKey.setPressed(false);
+            if (shouldSneak) {
+                sneakTick = 40;
+                mc.options.sneakKey.setPressed(true);
+            } else {
+                sneakTick--;
+                if (sneakTick < 0) {
+                    mc.options.sneakKey.setPressed(false);
+                }
             }
         }
 
@@ -161,7 +171,7 @@ public class Scaffold extends Module {
                 for (double z = box.minZ; z <= box.maxZ; z += 0.1) {
                     float[] currentRot = RotationUtil.rotation(new Vec3d(x, y, z), eye);
                     if (!isGood(RayCastUtil.rayCast(currentRot, placeRange.getValue(), 1f), data)) {
-                    //    continue;
+                        continue;
                     }
                     double currentDist = Math.hypot(
                             MathHelper.wrapDegrees(mc.player.getYaw() - currentRot[0]),
@@ -182,7 +192,7 @@ public class Scaffold extends Module {
         event.moveFix = true;
         if (!diagonal && bestPosition != null) {
         }
-        if (Math.abs(mc.player.getYaw() - mc.player.getYaw()) > 1) {
+        if ( Math.abs(mc.player.getYaw() - mc.player.getYaw()) > 1) {
             event.getInput().movementForward = 0;
             event.getInput().movementSideways = 0;
         }
@@ -192,12 +202,12 @@ public class Scaffold extends Module {
     @Override
     public void onClickTick(ClickTickEvent event) {
         if (sneakTick > 0) return;
-        //if (System.currentTimeMillis() - lastClicked < 50) return;
-        boolean sneakPacket = true;
+        //if (System.currentTimeMillis() - lastClicked < 25) return;
+        boolean sneakPacket = false;
         if (airTick > 0) {
             if (RandomUtil.percent(10)) {
                // ((MinecraftClientAccessor) mc).accessDoUseItem();
-                mc.inGameHud.getChatHud().addMessage(Text.literal("Clicked"));
+               // mc.inGameHud.getChatHud().addMessage(Text.literal("Clicked"));
             }
         }
         if (isGood(mc.crosshairTarget, data)) {
@@ -214,10 +224,9 @@ public class Scaffold extends Module {
             lastClicked = System.currentTimeMillis();
             return;
         }
-        if (!mc.player.isOnGround()) {
+        if (mc.player.isOnGround()) {
             return;
         }
-
 
         for (float delta = 0; delta <= 1f; delta += 0.01f) {
             HitResult result = mc.player.raycast(3, delta, false);
@@ -275,7 +284,6 @@ public class Scaffold extends Module {
         float stdYaw = Math.round(lastVirtualYaw / 45) * 45;
         //stdYaw += (float) Math.toDegrees(Math.atan2(lastSideways, lastForward));
         float stdPitch;
-        System.out.println(data == null);
         boolean deltaX = data == null ? Math.abs(mc.player.getX()) % 1 > 0.5 : data.getPos().getX() + 0.5 - mc.player.getX() > 0;
         boolean deltaZ = data == null ? Math.abs(mc.player.getZ()) % 1 > 0.5 : data.getPos().getZ() + 0.5 - mc.player.getZ() > 0;;
         if (Math.abs(stdYaw % 90) < 1) {
@@ -293,7 +301,7 @@ public class Scaffold extends Module {
                     stdYaw += deltaZ ? -45 : 45;
                     break;
             }
-            stdPitch = 75;
+            stdPitch = 75.95f;
             diagonal = false;
         } else {
             bestPosition = null;

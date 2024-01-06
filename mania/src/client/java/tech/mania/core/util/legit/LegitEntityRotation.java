@@ -29,10 +29,10 @@ public class LegitEntityRotation implements MCHook {
             if (System.currentTimeMillis() > next) {
                 final float[] center = RotationUtil.rotation(nearest, eye);
                 next = System.currentTimeMillis() + RandomUtil.nextInt(50);
-                aYaw = RandomUtil.nextFloat(0.1f) * MathHelper.wrapDegrees(
+                aYaw = RandomUtil.nextFloat(0.3f) * MathHelper.wrapDegrees(
                         center[0] - mc.player.getYaw()
                 );
-                aPitch = RandomUtil.nextFloat(0.1f) * MathHelper.wrapDegrees(
+                aPitch = RandomUtil.nextFloat(0.3f) * MathHelper.wrapDegrees(
                         center[1] - mc.player.getPitch()
                 );
             }
@@ -46,8 +46,8 @@ public class LegitEntityRotation implements MCHook {
                 RandomUtil.nextDouble(-0.1, 0.1),
                 RandomUtil.nextDouble(-0.1, 0.1)
         ), eye);
-        z[0] = RotationUtil.smoothRot(mc.player.getYaw(), z[0], RandomUtil.nextFloat(25, 50));
-        z[1] = RotationUtil.smoothRot(mc.player.getPitch(), z[1], RandomUtil.nextFloat(25, 50));
+        z[0] = RotationUtil.smoothRot(mc.player.getYaw(), z[0], RandomUtil.nextFloat(25, 30));
+        z[1] = RotationUtil.smoothRot(mc.player.getPitch(), z[1], RandomUtil.nextFloat(25, 30));
         z[1] += (float) (Math.sin(MathHelper.wrapDegrees(mc.player.getYaw() - z[0]) / 5) * 5);
         return z;
     }

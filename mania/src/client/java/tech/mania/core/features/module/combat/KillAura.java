@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.glfw.GLFW;
 import tech.mania.core.features.event.ClickTickEvent;
@@ -201,6 +202,7 @@ public class KillAura extends Module {
         final int clicks = timer.getClicks(RandomUtil.nextDouble(minCPS.getValue(), maxCPS.getValue()));
         if (clicks != 0 && RandomUtil.percent(75)) {
             ((MinecraftClientAccessor) mc).accessDoAttack();
+            mc.inGameHud.getChatHud().addMessage(Text.literal(String.format("Health: %f", target.getHealth())));
             timer.reset(RandomUtil.nextDouble(minCPS.getValue(), maxCPS.getValue()));
         }
         super.onClickTick(event);
