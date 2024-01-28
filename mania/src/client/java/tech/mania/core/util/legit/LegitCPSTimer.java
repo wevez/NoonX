@@ -8,16 +8,18 @@ public class LegitCPSTimer {
     private long time = System.currentTimeMillis();
 
     public int getClicks(double targetedCPS) {
-        if (ThreadLocalRandom.current().nextDouble(1.0) > Math.sqrt(remainder + 4.0) / 3.0) {
+        if (ThreadLocalRandom.current().nextDouble(1.3) > Math.sqrt(remainder + 4.0) / 3.0) { // choke (something around remainder = 9 forces it impossible)
             remainder++;
-        }
-        int ticks = Math.round((float) (System.currentTimeMillis() - time) / (int) (1000.0 / (targetedCPS + remainder)));
+            return 0;
+        };
+        int ticks = (int) Math.round((System.currentTimeMillis() - time) / (1000.0 / (targetedCPS + remainder)));
         time += (long) (ticks * (1000.0 / (targetedCPS + remainder)));
-        return System.currentTimeMillis() > time ? 1 : 0;
+        remainder = 0;
+        return ticks;
     }
 
     public void reset(double targetedCPS) {
-        time = System.currentTimeMillis() + (long) (1000.0 / targetedCPS);
+        time = (long) (System.currentTimeMillis() + (1000.0 / targetedCPS)); // The idea is that, it resets it not to 0 clicks but to 1 click means it will get the first hit
         remainder = 0;
     }
 }

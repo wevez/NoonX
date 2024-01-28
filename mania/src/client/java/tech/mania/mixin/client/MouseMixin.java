@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 import tech.mania.Mania;
 import tech.mania.core.features.event.RotationEvent;
+import tech.mania.core.util.RandomUtil;
 import tech.mania.core.util.RotationUtil;
 
 @Mixin(Mouse.class)
@@ -30,6 +31,7 @@ public class MouseMixin {
         RotationUtil.virtualPitch = MathHelper.clamp(RotationUtil.virtualPitch, -90.0F, 90.0F);
         RotationUtil.virtualPrevPitch += RotationUtil.virtualPitch - f;
         RotationUtil.virtualPrevYaw += RotationUtil.virtualYaw - f1;
+
         args.set(0, 0d);
         args.set(1, 0d);
 
@@ -38,11 +40,23 @@ public class MouseMixin {
                 RotationUtil.virtualPitch
         );
         Mania.getEventManager().call(rotationEvent);
-
         final ClientPlayerEntity thePlayer = MinecraftClient.getInstance().player;
+        float[] x = {rotationEvent.yaw, rotationEvent.pitch};
 
-        thePlayer.setYaw(RotationUtil.getFixedSensitivityAngle(rotationEvent.yaw, thePlayer.getYaw()));
-        thePlayer.setPitch(RotationUtil.getFixedSensitivityAngle(rotationEvent.pitch, thePlayer.getPitch()));
+        float yawSpeed = RandomUtil.nextFloat(0, 30);
+        float pitchSpeed = RandomUtil.nextFloat(0, 30);
+
+        if (Math.abs(MathHelper.wrapDegrees(thePlayer.getYaw() - x[0])) > yawSpeed) {
+            x[0] = RotationUtil.smoothRot(thePlayer.getYaw(), x[0], yawSpeed);
+            x[1] = thePlayer.getPitch() + pitchSpeed / 5;
+        } else {
+            x[0] = RotationUtil.smoothRot(thePlayer.getYaw(), x[0], yawSpeed);
+            x[1] = RotationUtil.smoothRot(thePlayer.getPitch(), x[1], pitchSpeed);
+            x[1] += MathHelper.wrapDegrees(thePlayer.getYaw() - x[0]);
+        }
+
+        thePlayer.setYaw(RotationUtil.getFixedSensitivityAngle(x[0], thePlayer.getYaw()));
+        thePlayer.setPitch(RotationUtil.getFixedSensitivityAngle(x[1], thePlayer.getPitch()));
         thePlayer.setPitch(MathHelper.clamp(thePlayer.getPitch(), -90f, 90f));
     }
 }

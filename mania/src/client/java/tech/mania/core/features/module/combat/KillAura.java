@@ -5,12 +5,11 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.glfw.GLFW;
-import tech.mania.core.features.event.ClickTickEvent;
-import tech.mania.core.features.event.PostUpdateEvent;
-import tech.mania.core.features.event.PreUpdateEvent;
-import tech.mania.core.features.event.RotationEvent;
+import tech.mania.core.features.event.*;
 import tech.mania.core.features.setting.BooleanSetting;
 import tech.mania.core.features.setting.DoubleSetting;
 import tech.mania.core.features.setting.ModeSetting;
@@ -19,6 +18,7 @@ import tech.mania.core.types.module.ModuleCategory;
 import tech.mania.core.util.AlgebraUtil;
 import tech.mania.core.util.PlayerUtil;
 import tech.mania.core.util.RandomUtil;
+import tech.mania.core.util.RotationUtil;
 import tech.mania.core.util.legit.LegitCPSTimer;
 import tech.mania.core.util.legit.LegitEntityRotation;
 import tech.mania.mixin.client.MinecraftClientAccessor;
@@ -160,7 +160,6 @@ public class KillAura extends Module {
         final List<LivingEntity> targetEntry = StreamSupport.stream(mc.world.getEntities().spliterator(), false)
                 .filter(e -> e instanceof LivingEntity && e != mc.player)
                 .map(e -> (LivingEntity) e)
-                .filter(e -> e.getHealth() == 0.1)
                 .filter(e -> {
                     if (e instanceof AnimalEntity) return this.animals.getValue();
                     if (e instanceof MobEntity) return this.monsters.getValue();
@@ -188,24 +187,57 @@ public class KillAura extends Module {
         final float[] r = ROT.calcRotation();
         event.yaw = r[0];
         event.pitch = r[1];
+
         super.onRotation(event);
+    }
+
+    private int sprintTick;
+
+    private boolean performedTick;
+
+    @Override
+    public void onPreUpdate(PreUpdateEvent event) {
+        timer.reset(minCPS.getValue());
+        performedTick = true;
+        super.onPreUpdate(event);
     }
 
     @Override
     public void onPostUpdate(PostUpdateEvent event) {
+        //ROT.calcRotation();
         //System.out.println(mc.player.getX());
         //System.out.println(PlayerUtil.predictPositions(mc.player, 1));
     }
 
     @Override
     public void onClickTick(ClickTickEvent event) {
-        if (target == null) return;
+        if (target == null) {
+            timer.reset(minCPS.getValue());
+            return;
+        }
         final int clicks = timer.getClicks(RandomUtil.nextDouble(minCPS.getValue(), maxCPS.getValue()));
-        if (clicks != 0 && RandomUtil.percent(75)) {
+        if (clicks != 0) {
             ((MinecraftClientAccessor) mc).accessDoAttack();
-            mc.inGameHud.getChatHud().addMessage(Text.literal(String.format("Health: %f", target.getHealth())));
-            timer.reset(RandomUtil.nextDouble(minCPS.getValue(), maxCPS.getValue()));
+            performedTick = false;
+            //mc.inGameHud.getChatHud().addMessage(Text.literal(String.format("Health: %f", target.getHealth())));
+            timer.reset(minCPS.getValue());
         }
         super.onClickTick(event);
+    }
+
+    @Override
+    public void onInput(InputEvent event) {
+        if (target == null) return;
+//        if (target.hurtTime == 10) {
+//            sprintTick = 2;
+//        }
+//        if (sprintTick > 0) {
+//            sprintTick--;
+//            event.getInput().movementForward = 0f;
+//        } else if (sprintTick == 0) {
+//            //mc.player.setSprinting(true);
+//            sprintTick--;
+//        }
+        super.onInput(event);
     }
 }

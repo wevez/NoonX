@@ -1,6 +1,7 @@
 package tech.mania.core.types.module;
 
 import tech.mania.core.features.module.combat.*;
+import tech.mania.core.features.module.movement.ReScaffold;
 import tech.mania.core.features.module.movement.Scaffold;
 import tech.mania.core.features.module.player.*;
 
@@ -16,7 +17,8 @@ public class ModuleManager {
                 new KillAura(),
                 new Velocity(),
                 new AutoSprint(),
-                new Scaffold()
+                new ReScaffold()
+                //new Scaffold()
         );
     }
 

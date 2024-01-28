@@ -35,10 +35,18 @@ public class KeyboardInputMixin implements MCHook {
     )
     public void injectTick(boolean slowDown, float slowDownFactor, CallbackInfo ci) {
         final KeyboardInput casted = (KeyboardInput) (Object) this;
-        final InputEvent event = new InputEvent(casted);
+        final InputEvent event = new InputEvent(casted, slowDownFactor);
         Mania.getEventManager().call(event);
         if (event.moveFix) {
             fixStrafe(event);
+        }
+        if (slowDownFactor == 0.2f) {
+            if (Math.abs(event.getInput().movementForward) > slowDownFactor) {
+                event.getInput().movementForward *= slowDownFactor;
+            }
+            if (Math.abs(event.getInput().movementSideways) > slowDownFactor) {
+                event.getInput().movementSideways *= slowDownFactor;
+            }
         }
     }
 }
